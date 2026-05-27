@@ -133,6 +133,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.example.eduhub_backend.exception.ResourceNotFoundException;
+
 @RestController
 @RequestMapping("/course")
 public class CourseController {
@@ -176,7 +178,7 @@ public class CourseController {
       Course course = courseList.stream()
 				.filter(c -> c.getCourseCode().equalsIgnoreCase(code))
 				.findFirst()
-				.orElse(null);
+				.orElseThrow(()-> new ResourceNotFoundException("Course","Course code",code));
 				
 				course.setSubjectName(updateCourse.getSubjectName());
 				course.setCredits(updateCourse.getCredits());
@@ -187,7 +189,7 @@ public class CourseController {
 		Course course = courseList.stream()
 				.filter(c -> c.getCourseCode().equalsIgnoreCase(code))
 				.findFirst()
-				.orElse(null);
+				.orElseThrow(()-> new ResourceNotFoundException("Course","Course code",code));
 		courseList.remove(course);
 		    return ResponseEntity.ok("Course deleted successfully");
 	}
