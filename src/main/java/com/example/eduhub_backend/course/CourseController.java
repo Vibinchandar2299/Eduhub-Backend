@@ -129,6 +129,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -181,5 +182,13 @@ public class CourseController {
 				course.setCredits(updateCourse.getCredits());
 		return null;
 	}
-	
+	@DeleteMapping("/delete-course/{code}")
+	public ResponseEntity<String> deleteCourse(@PathVariable String code) {
+		Course course = courseList.stream()
+				.filter(c -> c.getCourseCode().equalsIgnoreCase(code))
+				.findFirst()
+				.orElse(null);
+		courseList.remove(course);
+		    return ResponseEntity.ok("Course deleted successfully");
+	}
 }
